@@ -40,4 +40,24 @@ public class NovaPropostaRequest {
     public Proposta toModel() {
         return new Proposta(this.nome,  this.email, this.endereco, this.salarioBruto, this.documento);
     }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public BigDecimal getSalarioBruto() {
+        return salarioBruto;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
 }
