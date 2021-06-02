@@ -3,6 +3,7 @@ package br.com.zupedu.lucasmiguins.proposta.dto.proposta;
 import br.com.zupedu.lucasmiguins.proposta.model.proposta.Proposta;
 import br.com.zupedu.lucasmiguins.proposta.util.validation.annotation.CPFOrCNPJ;
 
+import javax.persistence.EntityManager;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
@@ -59,5 +60,13 @@ public class NovaPropostaRequest {
 
     public String getDocumento() {
         return documento;
+    }
+
+    public boolean existeDocumento(EntityManager em) {
+        var propostas = em.createQuery("from Proposta p where p.documento = :pDocumento")
+                .setParameter("pDocumento", this.documento)
+                .getResultList();
+
+        return propostas.size() == 1;
     }
 }
