@@ -1,9 +1,9 @@
 package br.com.zupedu.lucasmiguins.proposta.model.proposta;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import br.com.zupedu.lucasmiguins.proposta.enumeration.EnumResultadoSolicitacaoAnalise;
+import br.com.zupedu.lucasmiguins.proposta.enumeration.EnumEstadoProposta;
+
+import javax.persistence.*;
 import javax.validation.constraints.*;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -32,6 +32,9 @@ public class Proposta {
     @NotBlank
     private String documento;
 
+    @Enumerated(EnumType.STRING)
+    private EnumEstadoProposta estadoProposta;
+
     private LocalDateTime dataCriacao;
 
     @Deprecated
@@ -50,5 +53,17 @@ public class Proposta {
 
     public Long getId() {
         return id;
+    }
+
+    public String getNome() {
+        return nome;
+    }
+
+    public String getDocumento() {
+        return documento;
+    }
+
+    public void ajustaEstado(EnumResultadoSolicitacaoAnalise estadoAnalise) {
+        this.estadoProposta = estadoAnalise.ajusta();
     }
 }

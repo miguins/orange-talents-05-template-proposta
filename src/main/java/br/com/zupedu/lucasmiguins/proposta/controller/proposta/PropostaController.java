@@ -2,7 +2,11 @@ package br.com.zupedu.lucasmiguins.proposta.controller.proposta;
 
 import br.com.zupedu.lucasmiguins.proposta.dto.exception.ErrorResponse;
 import br.com.zupedu.lucasmiguins.proposta.dto.proposta.NovaPropostaRequest;
+import br.com.zupedu.lucasmiguins.proposta.external.analise.AnaliseProposta;
+import br.com.zupedu.lucasmiguins.proposta.external.analise.AnaliseRequest;
+import br.com.zupedu.lucasmiguins.proposta.external.analise.AnaliseResponse;
 import br.com.zupedu.lucasmiguins.proposta.model.proposta.Proposta;
+import br.com.zupedu.lucasmiguins.proposta.util.persistence.ExecutorTransacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -11,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.persistence.EntityManager;
 import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
@@ -23,25 +26,31 @@ import java.util.Collection;
 public class PropostaController {
 
     @Autowired
-    EntityManager em;
+    ExecutorTransacao executorTransacao;
+
+    @Autowired
+    AnaliseProposta analiseProposta;
 
     @PostMapping
     @Transactional
     public ResponseEntity<?> cadastro(@RequestBody @Valid NovaPropostaRequest request, UriComponentsBuilder uricb) {
 
-        if (!request.existeDocumento(em)) {
-            Proposta novaProposta = request.toModel();
-            em.persist(novaProposta);
-
-            URI uri = uricb.path("/api/v1/propostas/{id}").buildAndExpand(novaProposta.getId()).toUri();
-
-            return ResponseEntity.created(uri).build();
-        } else {
+        if (request.existeDocumento(executorTransacao.getManager())) {
             Collection<String> mensagens = new ArrayList<>();
             mensagens.add("Já existe uma Proposta com o documento informado!");
             ErrorResponse erro = new ErrorResponse(mensagens);
 
             return ResponseEntity.unprocessableEntity().body(erro);
         }
+
+        Proposta novaProposta = request.toModel();
+        executorTransacao.salvaEComita(novaProposta);
+
+        AnaliseResponse response = this.analiseProposta.analisa(new AnaliseRequest(novaProposta.getId(), novaProposta.getNome(), novaProposta.getDocumento()));
+        novaProposta.ajustaEstado(response.getResultadoSolicitacao());
+        executorTransacao.atualizaEComita(novaProposta);
+
+        URI uri = uricb.path("/api/v1/propostas/{id}").buildAndExpand(novaProposta.getId()).toUri();
+        return ResponseEntity.created(uri).build();
     }
 }
