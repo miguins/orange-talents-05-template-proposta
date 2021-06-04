@@ -1,4 +1,4 @@
-package br.com.zupedu.lucasmiguins.proposta.external.analise;
+package br.com.zupedu.lucasmiguins.proposta.dto.analise;
 
 import br.com.zupedu.lucasmiguins.proposta.enumeration.EnumResultadoSolicitacaoAnalise;
 

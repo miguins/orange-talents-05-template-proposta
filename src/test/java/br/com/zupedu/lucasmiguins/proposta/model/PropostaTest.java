@@ -1,4 +1,4 @@
-package br.com.zupedu.lucasmiguins.proposta.model.proposta;
+package br.com.zupedu.lucasmiguins.proposta.model;
 
 import br.com.zupedu.lucasmiguins.proposta.dto.proposta.NovaPropostaRequest;
 import com.fasterxml.jackson.core.JsonProcessingException;

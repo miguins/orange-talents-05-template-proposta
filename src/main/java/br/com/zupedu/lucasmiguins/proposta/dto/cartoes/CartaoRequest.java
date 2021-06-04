@@ -1,9 +1,9 @@
-package br.com.zupedu.lucasmiguins.proposta.external.analise;
+package br.com.zupedu.lucasmiguins.proposta.dto.cartoes;
 
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
-public class AnaliseRequest {
+public class CartaoRequest {
 
     @NotNull
     private Long idProposta;
@@ -14,7 +14,7 @@ public class AnaliseRequest {
     @NotBlank
     private String documento;
 
-    public AnaliseRequest(Long idProposta, String nome, String documento) {
+    public CartaoRequest(Long idProposta, String nome, String documento) {
         this.idProposta = idProposta;
         this.nome = nome;
         this.documento = documento;

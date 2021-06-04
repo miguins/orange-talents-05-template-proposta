@@ -1,9 +1,11 @@
 package br.com.zupedu.lucasmiguins.proposta.external.analise;
 
-import br.com.zupedu.lucasmiguins.proposta.exception.ApiErrorException;
+import br.com.zupedu.lucasmiguins.proposta.dto.analise.AnaliseRequest;
+import br.com.zupedu.lucasmiguins.proposta.dto.analise.AnaliseResponse;
+import br.com.zupedu.lucasmiguins.proposta.enumeration.EnumResultadoSolicitacaoAnalise;
+import br.com.zupedu.lucasmiguins.proposta.model.Proposta;
 import feign.FeignException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
 import javax.validation.Valid;
@@ -12,15 +14,18 @@ import javax.validation.Valid;
 public class AnaliseProposta {
 
     @Autowired
-    SolicitacaoAnalise solicitacao;
+    ApiSolicitacaoAnalise solicitacao;
 
-    public AnaliseResponse analisa(@Valid AnaliseRequest proposta) {
+    public AnaliseResponse analisa(@Valid Proposta proposta) {
+        AnaliseResponse result;
 
         try {
 
-            return solicitacao.analisa(proposta);
-        }catch (FeignException.FeignClientException | FeignException.FeignServerException error) {
-            throw new ApiErrorException(HttpStatus.valueOf(error.status()), error.getLocalizedMessage());
+            result = solicitacao.analisa(new AnaliseRequest(proposta.getId(), proposta.getNome(), proposta.getDocumento()));
+        } catch (FeignException.FeignClientException | FeignException.FeignServerException error) {
+            result = new AnaliseResponse(proposta.getNome(), proposta.getDocumento(), proposta.getId(), EnumResultadoSolicitacaoAnalise.COM_RESTRICAO);
         }
+
+        return result;
     }
 }

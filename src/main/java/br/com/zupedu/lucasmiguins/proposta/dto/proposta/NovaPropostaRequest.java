@@ -1,6 +1,6 @@
 package br.com.zupedu.lucasmiguins.proposta.dto.proposta;
 
-import br.com.zupedu.lucasmiguins.proposta.model.proposta.Proposta;
+import br.com.zupedu.lucasmiguins.proposta.model.Proposta;
 import br.com.zupedu.lucasmiguins.proposta.util.validation.annotation.CPFOrCNPJ;
 
 import javax.persistence.EntityManager;
@@ -67,6 +67,6 @@ public class NovaPropostaRequest {
                 .setParameter("pDocumento", this.documento)
                 .getResultList();
 
-        return propostas.size() == 1;
+        return propostas.size() >= 1;
     }
 }

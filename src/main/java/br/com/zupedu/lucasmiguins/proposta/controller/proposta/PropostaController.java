@@ -3,9 +3,8 @@ package br.com.zupedu.lucasmiguins.proposta.controller.proposta;
 import br.com.zupedu.lucasmiguins.proposta.dto.exception.ErrorResponse;
 import br.com.zupedu.lucasmiguins.proposta.dto.proposta.NovaPropostaRequest;
 import br.com.zupedu.lucasmiguins.proposta.external.analise.AnaliseProposta;
-import br.com.zupedu.lucasmiguins.proposta.external.analise.AnaliseRequest;
-import br.com.zupedu.lucasmiguins.proposta.external.analise.AnaliseResponse;
-import br.com.zupedu.lucasmiguins.proposta.model.proposta.Proposta;
+import br.com.zupedu.lucasmiguins.proposta.dto.analise.AnaliseResponse;
+import br.com.zupedu.lucasmiguins.proposta.model.Proposta;
 import br.com.zupedu.lucasmiguins.proposta.util.persistence.ExecutorTransacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -15,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import javax.transaction.Transactional;
 import javax.validation.Valid;
 import java.net.URI;
 import java.util.ArrayList;
@@ -32,7 +30,6 @@ public class PropostaController {
     AnaliseProposta analiseProposta;
 
     @PostMapping
-    @Transactional
     public ResponseEntity<?> cadastro(@RequestBody @Valid NovaPropostaRequest request, UriComponentsBuilder uricb) {
 
         if (request.existeDocumento(executorTransacao.getManager())) {
@@ -46,7 +43,7 @@ public class PropostaController {
         Proposta novaProposta = request.toModel();
         executorTransacao.salvaEComita(novaProposta);
 
-        AnaliseResponse response = this.analiseProposta.analisa(new AnaliseRequest(novaProposta.getId(), novaProposta.getNome(), novaProposta.getDocumento()));
+        AnaliseResponse response = this.analiseProposta.analisa(novaProposta);
         novaProposta.ajustaEstado(response.getResultadoSolicitacao());
         executorTransacao.atualizaEComita(novaProposta);
 

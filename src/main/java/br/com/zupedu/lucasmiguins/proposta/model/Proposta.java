@@ -1,4 +1,4 @@
-package br.com.zupedu.lucasmiguins.proposta.model.proposta;
+package br.com.zupedu.lucasmiguins.proposta.model;
 
 import br.com.zupedu.lucasmiguins.proposta.enumeration.EnumResultadoSolicitacaoAnalise;
 import br.com.zupedu.lucasmiguins.proposta.enumeration.EnumEstadoProposta;
@@ -37,6 +37,9 @@ public class Proposta {
 
     private LocalDateTime dataCriacao;
 
+    @OneToOne(cascade = CascadeType.MERGE)
+    private Cartao cartao;
+
     @Deprecated
     public Proposta() {
     }
@@ -65,5 +68,9 @@ public class Proposta {
 
     public void ajustaEstado(EnumResultadoSolicitacaoAnalise estadoAnalise) {
         this.estadoProposta = estadoAnalise.ajusta();
+    }
+
+    public void paraCartao(Cartao cartao) {
+        this.cartao = cartao;
     }
 }
