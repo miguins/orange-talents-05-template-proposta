@@ -12,6 +12,15 @@ public class VencimentoResponse {
 
     private LocalDateTime dataDeCriacao;
 
+    public VencimentoResponse() {
+    }
+
+    public VencimentoResponse(Vencimento vencimento) {
+        this.id = vencimento.getId();
+        this.dia = vencimento.getDia();
+        this.dataDeCriacao = vencimento.getDataDeCriacao();
+    }
+
     public Vencimento toModel() {
         return new Vencimento(id, dia, dataDeCriacao);
     }

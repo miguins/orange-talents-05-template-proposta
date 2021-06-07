@@ -62,8 +62,36 @@ public class Proposta {
         return nome;
     }
 
+    public String getEmail() {
+        return email;
+    }
+
+    public String getEndereco() {
+        return endereco;
+    }
+
+    public BigDecimal getSalarioBruto() {
+        return salarioBruto;
+    }
+
+    public EnumEstadoProposta getEstadoProposta() {
+        return estadoProposta;
+    }
+
+    public LocalDateTime getDataCriacao() {
+        return dataCriacao;
+    }
+
+    public Cartao getCartao() {
+        return cartao;
+    }
+
     public String getDocumento() {
         return documento;
+    }
+
+    public boolean possuiCartao() {
+        return this.cartao != null;
     }
 
     public void ajustaEstado(EnumResultadoSolicitacaoAnalise estadoAnalise) {

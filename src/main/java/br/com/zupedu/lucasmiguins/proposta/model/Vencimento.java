@@ -27,4 +27,16 @@ public class Vencimento {
         this.dia = dia;
         this.dataDeCriacao = dataDeCriacao;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public Integer getDia() {
+        return dia;
+    }
+
+    public LocalDateTime getDataDeCriacao() {
+        return dataDeCriacao;
+    }
 }

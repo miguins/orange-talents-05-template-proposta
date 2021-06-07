@@ -2,16 +2,14 @@ package br.com.zupedu.lucasmiguins.proposta.controller.proposta;
 
 import br.com.zupedu.lucasmiguins.proposta.dto.exception.ErrorResponse;
 import br.com.zupedu.lucasmiguins.proposta.dto.proposta.NovaPropostaRequest;
+import br.com.zupedu.lucasmiguins.proposta.dto.proposta.PropostaDetalheResponse;
 import br.com.zupedu.lucasmiguins.proposta.external.analise.AnaliseProposta;
 import br.com.zupedu.lucasmiguins.proposta.dto.analise.AnaliseResponse;
 import br.com.zupedu.lucasmiguins.proposta.model.Proposta;
 import br.com.zupedu.lucasmiguins.proposta.util.persistence.ExecutorTransacao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import javax.validation.Valid;
@@ -49,5 +47,19 @@ public class PropostaController {
 
         URI uri = uricb.path("/api/v1/propostas/{id}").buildAndExpand(novaProposta.getId()).toUri();
         return ResponseEntity.created(uri).build();
+    }
+
+    @GetMapping("/{id}")
+    public ResponseEntity<?> detalhe(@PathVariable("id") Long id) {
+
+        Proposta proposta = executorTransacao.getManager().find(Proposta.class, id);
+
+        if (proposta == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        PropostaDetalheResponse response = new PropostaDetalheResponse(proposta);
+
+        return ResponseEntity.ok(response);
     }
 }

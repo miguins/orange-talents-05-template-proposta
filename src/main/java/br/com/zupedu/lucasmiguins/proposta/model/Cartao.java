@@ -45,4 +45,24 @@ public class Cartao {
 
         this.vencimento = vencimento;
     }
+
+    public String getId() {
+        return id;
+    }
+
+    public String getTitular() {
+        return titular;
+    }
+
+    public LocalDateTime getEmitidoEm() {
+        return emitidoEm;
+    }
+
+    public Integer getLimite() {
+        return limite;
+    }
+
+    public Vencimento getVencimento() {
+        return vencimento;
+    }
 }
