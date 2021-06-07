@@ -134,7 +134,39 @@ services:
       VAULT_TOKEN: ee413645-dbe8-4848-afc6-6bb2768ada75
       VAULT_ADDR: http://127.0.0.1:8200
 
+# Imagens para proposta
+  proposta-mysql:
+    image: mysql
+    volumes:
+      - mysql-volume:/var/lib/mysql
+    ports:
+      - 3307:3306
+    environment:
+      MYSQL_ROOT_PASSWORD: 1234
+      MYSQL_USER: proposta_user
+      MYSQL_PASSWORD: password
+      MYSQL_DATABASE: proposta
+
+  proposta:
+    build: .
+    image: proposta
+    ports:
+      - 8080:8080
+    environment:
+      JDBC_HOST: proposta-mysql
+      JDBC_PORT: 3306
+      JDBC_DB: proposta
+      JDBC_USERNAME: proposta_user
+      JDBC_PASSWORD: password
+      ANALISES_URL: http://analise:9999/api/solicitacao
+      CARTOES_URL: http://contas:8888/api/cartoes
+    depends_on:
+      - proposta-mysql
+      - analise
+      - contas
+
 volumes:
   grafana-volume:
   prometheus-volume:
   postgres-volume:
+  mysql-volume:
