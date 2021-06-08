@@ -160,6 +160,8 @@ services:
       JDBC_PASSWORD: password
       ANALISES_URL: http://analise:9999/api/solicitacao
       CARTOES_URL: http://contas:8888/api/cartoes
+      KEYCLOAK_ISSUER_URI: http://keycloak:18080/auth/realms/nosso-cartao
+      KEYCLOAK_JWKS_URI: http://keycloak:18080/auth/realms/nosso-cartao/protocol/openid-connect/certs
     depends_on:
       - proposta-mysql
       - analise
