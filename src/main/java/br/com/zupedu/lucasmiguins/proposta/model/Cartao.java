@@ -1,13 +1,13 @@
 package br.com.zupedu.lucasmiguins.proposta.model;
 
-import javax.persistence.CascadeType;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.OneToOne;
+import br.com.zupedu.lucasmiguins.proposta.enumeration.EnumStatusBloqueio;
+
+import javax.persistence.*;
 import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Entity
 public class Cartao {
@@ -32,6 +32,9 @@ public class Cartao {
     @NotNull
     @OneToOne
     private Proposta proposta;
+
+    @OneToMany(mappedBy = "cartao", fetch = FetchType.LAZY)
+    private List<Bloqueio> bloqueios;
 
     @Deprecated
     public Cartao() { }
@@ -64,5 +67,9 @@ public class Cartao {
 
     public Vencimento getVencimento() {
         return vencimento;
+    }
+
+    public boolean isCartaoBloqueado() {
+       return this.bloqueios.stream().anyMatch(bloqueio -> bloqueio.getStatusBloqueio().equals(EnumStatusBloqueio.BLOQUEADO));
     }
 }

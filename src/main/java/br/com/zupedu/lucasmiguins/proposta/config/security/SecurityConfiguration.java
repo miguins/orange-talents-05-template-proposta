@@ -18,6 +18,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.authorizeRequests()
                 .antMatchers(HttpMethod.POST,"/**/propostas").hasAuthority("SCOPE_propostas:write")
                 .antMatchers(HttpMethod.POST,"/**/biometrias/**").hasAuthority("SCOPE_propostas:write")
+                .antMatchers(HttpMethod.POST,"/**/bloqueios/**").hasAuthority("SCOPE_propostas:write")
                 .antMatchers(HttpMethod.GET,"/**/propostas/**").hasAuthority("SCOPE_propostas:read")
                 .anyRequest().authenticated()
                 .and().cors()
