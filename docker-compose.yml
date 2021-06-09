@@ -153,6 +153,7 @@ services:
     ports:
       - 8080:8080
     environment:
+      SERVER_PORT: 8080
       JDBC_HOST: proposta-mysql
       JDBC_PORT: 3306
       JDBC_DB: proposta
@@ -162,10 +163,12 @@ services:
       CARTOES_URL: http://contas:8888/api/cartoes
       KEYCLOAK_ISSUER_URI: http://keycloak:18080/auth/realms/nosso-cartao
       KEYCLOAK_JWKS_URI: http://keycloak:18080/auth/realms/nosso-cartao/protocol/openid-connect/certs
+    restart: always
     depends_on:
       - proposta-mysql
       - analise
       - contas
+      - keycloak
 
 volumes:
   grafana-volume:

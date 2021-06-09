@@ -1,6 +1,7 @@
 package br.com.zupedu.lucasmiguins.proposta.controller.bloqueio;
 
 import br.com.zupedu.lucasmiguins.proposta.dto.exception.ErrorResponse;
+import br.com.zupedu.lucasmiguins.proposta.external.cartoes.CartaoBloqueio;
 import br.com.zupedu.lucasmiguins.proposta.model.Bloqueio;
 import br.com.zupedu.lucasmiguins.proposta.model.Cartao;
 import br.com.zupedu.lucasmiguins.proposta.util.HttpRequestUtil;
@@ -24,6 +25,9 @@ public class BloqueioController {
     @Autowired
     ExecutorTransacao executorTransacao;
 
+    @Autowired
+    CartaoBloqueio cartaoBloqueio;
+
     @PostMapping("/cartao/{id}")
     public ResponseEntity<?> cadastro(@PathVariable("id") String idCartao, HttpServletRequest request) {
 
@@ -46,6 +50,8 @@ public class BloqueioController {
 
         String clientIpAddress = HttpRequestUtil.getClientIpAddress(request);
         String clientUserAgent = HttpRequestUtil.getClientUserAgent(request);
+
+        this.cartaoBloqueio.notificarBloqueio(idCartao);
 
         Bloqueio novoBloqueio = new Bloqueio(clientIpAddress, clientUserAgent, cartao.get());
         executorTransacao.salvaEComita(novoBloqueio);
