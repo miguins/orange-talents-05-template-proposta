@@ -5,6 +5,7 @@ import br.com.zupedu.lucasmiguins.proposta.dto.proposta.NovaPropostaRequest;
 import br.com.zupedu.lucasmiguins.proposta.dto.proposta.PropostaDetalheResponse;
 import br.com.zupedu.lucasmiguins.proposta.external.analise.AnaliseProposta;
 import br.com.zupedu.lucasmiguins.proposta.dto.analise.AnaliseResponse;
+import br.com.zupedu.lucasmiguins.proposta.metric.PropostaMetrics;
 import br.com.zupedu.lucasmiguins.proposta.model.Proposta;
 import br.com.zupedu.lucasmiguins.proposta.util.persistence.ExecutorTransacao;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,6 +28,9 @@ public class PropostaController {
     @Autowired
     AnaliseProposta analiseProposta;
 
+    @Autowired
+    PropostaMetrics propostaMetrics;
+
     @PostMapping
     public ResponseEntity<?> cadastro(@RequestBody @Valid NovaPropostaRequest request, UriComponentsBuilder uricb) {
 
@@ -44,6 +48,8 @@ public class PropostaController {
         AnaliseResponse response = this.analiseProposta.analisa(novaProposta);
         novaProposta.ajustaEstado(response.getResultadoSolicitacao());
         executorTransacao.atualizaEComita(novaProposta);
+
+        propostaMetrics.contadorDePropostasCriadas.increment();
 
         URI uri = uricb.path("/api/v1/propostas/{id}").buildAndExpand(novaProposta.getId()).toUri();
         return ResponseEntity.created(uri).build();
