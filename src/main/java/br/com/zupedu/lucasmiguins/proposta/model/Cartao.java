@@ -7,6 +7,7 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 @Entity
@@ -34,7 +35,10 @@ public class Cartao {
     private Proposta proposta;
 
     @OneToMany(mappedBy = "cartao", fetch = FetchType.LAZY)
-    private List<Bloqueio> bloqueios;
+    private List<Bloqueio> bloqueios = new ArrayList<>();
+
+    @OneToMany(mappedBy = "cartao", fetch = FetchType.LAZY)
+    private List<AvisoViagem> viagens = new ArrayList<>();
 
     @Deprecated
     public Cartao() { }

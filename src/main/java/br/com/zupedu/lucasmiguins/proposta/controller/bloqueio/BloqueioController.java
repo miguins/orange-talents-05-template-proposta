@@ -31,8 +31,6 @@ public class BloqueioController {
     @PostMapping("/cartao/{id}")
     public ResponseEntity<?> cadastro(@PathVariable("id") String idCartao, HttpServletRequest request) {
 
-        HttpRequestUtil.getClientIpAddress(request);
-
         Optional<Cartao> cartao = executorTransacao.getManager()
                 .createQuery("from Cartao c where c.id = :pId")
                 .setParameter("pId", idCartao)
