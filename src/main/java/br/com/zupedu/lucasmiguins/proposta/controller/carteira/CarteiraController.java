@@ -53,7 +53,7 @@ public class CarteiraController {
         Carteira novaCarteira = request.toModel(cartao.get(), associacaoResponse.getId());
         executorTransacao.salvaEComita(novaCarteira);
 
-        URI uri = uricb.path("/api/v1/carteiras/{id}").buildAndExpand(novaCarteira.getId()).toUri();
+        URI uri = uricb.path("/api/v1/carteiras/" + request.getTipoCarteira().getDescricao() + "/{id}").buildAndExpand(novaCarteira.getId()).toUri();
         return ResponseEntity.created(uri).build();
     }
 }
