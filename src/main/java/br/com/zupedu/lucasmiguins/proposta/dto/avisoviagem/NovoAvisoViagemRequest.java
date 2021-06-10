@@ -33,6 +33,14 @@ public class NovoAvisoViagemRequest {
         this.dataInicio = dataInicio;
     }
 
+    public String getDestino() {
+        return destino;
+    }
+
+    public LocalDate getDataTermino() {
+        return dataTermino;
+    }
+
     public AvisoViagem toModel(Cartao cartao, String ipCliente, String userAgenteCliente) {
         return new AvisoViagem(this.destino, this.dataTermino, this.dataInicio, ipCliente, userAgenteCliente, cartao);
     }

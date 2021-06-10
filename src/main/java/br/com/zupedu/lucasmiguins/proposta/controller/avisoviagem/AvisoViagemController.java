@@ -1,6 +1,7 @@
 package br.com.zupedu.lucasmiguins.proposta.controller.avisoviagem;
 
 import br.com.zupedu.lucasmiguins.proposta.dto.avisoviagem.NovoAvisoViagemRequest;
+import br.com.zupedu.lucasmiguins.proposta.external.cartoes.NotificacaoViagem;
 import br.com.zupedu.lucasmiguins.proposta.model.AvisoViagem;
 import br.com.zupedu.lucasmiguins.proposta.model.Cartao;
 import br.com.zupedu.lucasmiguins.proposta.util.HttpRequestUtil;
@@ -20,6 +21,9 @@ public class AvisoViagemController {
     @Autowired
     ExecutorTransacao executorTransacao;
 
+    @Autowired
+    NotificacaoViagem notificacaoViagem;
+
     @PostMapping("/cartao/{id}")
     public ResponseEntity<?> cadastro(@PathVariable("id") String idCartao, HttpServletRequest servletRequest,
                                     @RequestBody @Valid NovoAvisoViagemRequest request) {
@@ -35,6 +39,8 @@ public class AvisoViagemController {
 
         String clientIpAddress = HttpRequestUtil.getClientIpAddress(servletRequest);
         String clientUserAgent = HttpRequestUtil.getClientUserAgent(servletRequest);
+
+        notificacaoViagem.notificarViagem(idCartao, request.getDestino(), request.getDataTermino());
 
         AvisoViagem novoAvisoViagem = request.toModel(cartao.get(), clientIpAddress, clientUserAgent);
         executorTransacao.salvaEComita(novoAvisoViagem);

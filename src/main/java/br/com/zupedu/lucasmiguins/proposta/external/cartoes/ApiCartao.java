@@ -1,9 +1,6 @@
 package br.com.zupedu.lucasmiguins.proposta.external.cartoes;
 
-import br.com.zupedu.lucasmiguins.proposta.dto.cartoes.CartaoBloqueioRequest;
-import br.com.zupedu.lucasmiguins.proposta.dto.cartoes.CartaoBloqueioResponse;
-import br.com.zupedu.lucasmiguins.proposta.dto.cartoes.CartaoRequest;
-import br.com.zupedu.lucasmiguins.proposta.dto.cartoes.CartaoResponse;
+import br.com.zupedu.lucasmiguins.proposta.dto.cartoes.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -15,5 +12,8 @@ public interface ApiCartao {
     CartaoResponse cadastro(CartaoRequest request);
 
     @PostMapping("/{id}/bloqueios")
-    CartaoBloqueioResponse bloqueio(@PathVariable("id") String idCartao, CartaoBloqueioRequest request);
+    ApiCartaoDefaultResponse bloqueio(@PathVariable("id") String idCartao, CartaoBloqueioRequest request);
+
+    @PostMapping("/{id}/avisos")
+    ApiCartaoDefaultResponse aviso(@PathVariable("id") String idCartao, NotificacaoAvisoViagemRequest request);
 }

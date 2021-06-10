@@ -1,10 +1,10 @@
 package br.com.zupedu.lucasmiguins.proposta.dto.cartoes;
 
-public class CartaoBloqueioResponse {
+public class ApiCartaoDefaultResponse {
 
     private String resultado;
 
-    public CartaoBloqueioResponse() {
+    public ApiCartaoDefaultResponse() {
     }
 
     public String getResultado() {
