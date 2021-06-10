@@ -1,5 +1,7 @@
 package br.com.zupedu.lucasmiguins.proposta.external.cartoes;
 
+import br.com.zupedu.lucasmiguins.proposta.dto.carteira.CarteiraCartaoResponse;
+import br.com.zupedu.lucasmiguins.proposta.dto.carteira.NovaCarteiraCartaoRequest;
 import br.com.zupedu.lucasmiguins.proposta.dto.cartoes.*;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,4 +18,7 @@ public interface ApiCartao {
 
     @PostMapping("/{id}/avisos")
     ApiCartaoDefaultResponse aviso(@PathVariable("id") String idCartao, NotificacaoAvisoViagemRequest request);
+
+    @PostMapping("/{id}/carteiras")
+    CarteiraCartaoResponse carteira(@PathVariable("id") String idCartao, NovaCarteiraCartaoRequest request);
 }

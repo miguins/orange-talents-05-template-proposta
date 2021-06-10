@@ -1,6 +1,7 @@
 package br.com.zupedu.lucasmiguins.proposta.model;
 
 import br.com.zupedu.lucasmiguins.proposta.enumeration.EnumStatusBloqueio;
+import br.com.zupedu.lucasmiguins.proposta.enumeration.EnumTipoCarteira;
 
 import javax.persistence.*;
 import javax.validation.Valid;
@@ -40,6 +41,9 @@ public class Cartao {
     @OneToMany(mappedBy = "cartao", fetch = FetchType.LAZY)
     private List<AvisoViagem> viagens = new ArrayList<>();
 
+    @OneToMany(mappedBy = "cartao", fetch = FetchType.LAZY)
+    private List<Carteira> carteiras = new ArrayList<>();
+
     @Deprecated
     public Cartao() { }
 
@@ -75,5 +79,9 @@ public class Cartao {
 
     public boolean isCartaoBloqueado() {
        return this.bloqueios.stream().anyMatch(bloqueio -> bloqueio.getStatusBloqueio().equals(EnumStatusBloqueio.BLOQUEADO));
+    }
+
+    public boolean jaPossuiCartaoParaOTipo(EnumTipoCarteira tipoCarteira) {
+        return this.carteiras.stream().anyMatch(carteira -> carteira.getTipoCarteira().equals(tipoCarteira));
     }
 }
