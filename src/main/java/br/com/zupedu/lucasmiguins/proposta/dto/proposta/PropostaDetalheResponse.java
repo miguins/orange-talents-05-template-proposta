@@ -2,6 +2,7 @@ package br.com.zupedu.lucasmiguins.proposta.dto.proposta;
 
 import br.com.zupedu.lucasmiguins.proposta.enumeration.EnumEstadoProposta;
 import br.com.zupedu.lucasmiguins.proposta.model.Proposta;
+import br.com.zupedu.lucasmiguins.proposta.util.CryptUtils;
 
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
@@ -30,7 +31,7 @@ public class PropostaDetalheResponse {
         this.email = proposta.getEmail();
         this.endereco = proposta.getEndereco();
         this.salarioBruto = proposta.getSalarioBruto();
-        this.documento = proposta.getDocumento();
+        this.documento = CryptUtils.decrypt(proposta.getDocumento());
         this.estadoProposta = proposta.getEstadoProposta();
         this.dataCriacao = proposta.getDataCriacao();
 

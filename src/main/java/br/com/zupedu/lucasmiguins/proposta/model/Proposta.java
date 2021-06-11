@@ -2,6 +2,7 @@ package br.com.zupedu.lucasmiguins.proposta.model;
 
 import br.com.zupedu.lucasmiguins.proposta.enumeration.EnumResultadoSolicitacaoAnalise;
 import br.com.zupedu.lucasmiguins.proposta.enumeration.EnumEstadoProposta;
+import br.com.zupedu.lucasmiguins.proposta.util.CryptUtils;
 
 import javax.persistence.*;
 import javax.validation.constraints.*;
@@ -49,7 +50,7 @@ public class Proposta {
         this.email = email;
         this.endereco = endereco;
         this.salarioBruto = salarioBruto;
-        this.documento = documento;
+        this.documento = CryptUtils.encrypt(documento);
 
         this.dataCriacao = LocalDateTime.now();
     }
